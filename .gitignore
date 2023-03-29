@@ -130,3 +130,6 @@ dmypy.json
 
 # Pycharm ide
 .idea
+
+# client secret key
+src/config/client-secret.json
