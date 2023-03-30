@@ -1,0 +1,25 @@
+APPLICATION:
+  # This variable specifies the name of a file that contains the OAuth 2.0
+  # information for this application, including its client_id and client_secret.
+  CLIENT_SECRETS_FILE: 'client-secret.json'
+  CLIENT_ID: '611402686764-ihcj8p6dnpv3gsk7t20rnadec94nfrdj.apps.googleusercontent.com'
+
+  # This OAuth 2.0 access scope allows for full read/write access to the
+  # authenticated user's account and requires requests to use an SSL connection.
+  GOOGLE_API_SCOPES: [
+    'https://www.googleapis.com/auth/drive.metadata.readonly',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email',
+    'openid'
+  ]
+
+  GOOGLE_API_SERVICE_NAME: 'drive'
+  GOOGLE_API_VERSION: 'v3'
+
+  # Setting secret key and algorithm for encode and decode jwt
+  SECRET_KEY: 'SecretKey'
+  ALGORITHM: 'HS256'
+  SECRET_TYPE: 'Bearer'
+
+  DATABASE_URI: 'mongodb://localhost:27017'
+  DATABASE_NAME: 'send_to_ereader'

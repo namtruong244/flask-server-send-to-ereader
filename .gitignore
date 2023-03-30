@@ -132,4 +132,4 @@ dmypy.json
 .idea
 
 # client secret key
-src/config/client-secret.json
+client-secret.json
