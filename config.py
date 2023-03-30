@@ -1,16 +1,18 @@
 class Config:
-    pass
+    JSON_SORT_KEYS = False
 
 
 class DevelopmentConfig(Config):
-    pass
+    DEBUG = True
+    DEVELOPMENT = True
 
 
 class ProductionConfig(Config):
-    pass
+    DEBUG = False
+    DEVELOPMENT = False
 
 
 app_config = {
     'dev': DevelopmentConfig,
-    'prod': ProductionConfig
+    'prd': ProductionConfig
 }
