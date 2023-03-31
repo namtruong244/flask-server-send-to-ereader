@@ -1,6 +1,6 @@
 import jwt
 from functools import wraps
-from flask import request, g
+from flask import request, g, make_response, jsonify
 
 
 # wrapper
@@ -15,7 +15,7 @@ def login_required(function):
 
         # Return 401 if token is not passed
         if token is None:
-            return 401
+            return '401'
 
         try:
             # decoding the payload to fetch the stored details
@@ -34,7 +34,7 @@ def login_required(function):
             })
         except Exception as e:
             print(e.args)
-            return 401
+            return make_response(jsonify({'message': 'Error jwt'}), 401)
 
         # returns the current logged users context to the routes
         return function(current_user, *args, **kwargs)

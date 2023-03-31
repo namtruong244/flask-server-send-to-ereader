@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from flask import request
+from flask import request, make_response, jsonify, g, Response
+from app.common import NotFoundConfigException
 from app.utils.util import parse_json
 
 
@@ -7,17 +8,17 @@ class CmnController(ABC):
     CONTENT_TYPE_JSON = "application/json"
     CONTENT_TYPE_TEXT = "text/plain"
 
-    RESPONSE_HEADERS = {
-        "Cache-Control": "no-store",
-        "Content-Type": "application/json; charset=UTF-8",
-        "Connection": "close",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "X-Frame-Options": "SAMEORIGIN",
-        "Content-Security-Policy": "reflected-xss block",
-        "X-Content-Type-Options": "nosniff",
-        "X-XSS-Protection": "1; mode=block"
-    }
+    RESPONSE_HEADERS = (
+        ('Cache-Control', 'no-store'),
+        ('Content-Type', 'application/json; charset=UTF-8'),
+        ('Connection', 'close'),
+        ('Expires', '-1'),
+        ('Pragma', 'no-cache'),
+        ('X-Frame-Options', 'SAMEORIGIN'),
+        ('Content-Security-Policy', 'reflected-xss block'),
+        ('X-Content-Type-Options', 'nosniff'),
+        ('X-XSS-Protection', '1; mode=bloc')
+    )
 
     request_params = dict()
     request_addition = dict()
@@ -56,3 +57,42 @@ class CmnController(ABC):
             request_body = parse_json(request.data)
 
         return request_body
+
+    def response_api(self, code, params=None) -> Response:
+        response, http_status = self.get_response(code, params)
+
+        response = make_response(jsonify(response), http_status)
+
+        # set response header
+        for name, value in self.RESPONSE_HEADERS:
+            response.headers[name] = value
+
+        return response
+
+    @staticmethod
+    def get_response(code: str, params: dict | str | tuple) -> tuple:
+        if code not in g.params['API_RESPONSE']:
+            raise NotFoundConfigException("Not found config [API_RESPONSE][" + code + "]")
+
+        response_config = g.params['API_RESPONSE'][code]
+        msg = response_config['MSG']
+        http_status = response_config['HTTP']
+
+        if '%' in msg and isinstance(params, dict) is False:
+            msg = msg % params
+
+        if 'CODE' in response_config:
+            code = response_config['CODE']
+
+        # set default response
+        response = {
+            'header': {
+                'code': code,
+                'message': msg
+            }
+        }
+
+        if isinstance(params, dict):
+            response.update(params)
+
+        return response, http_status

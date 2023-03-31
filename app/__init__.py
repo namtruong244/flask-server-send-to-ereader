@@ -1,3 +1,4 @@
+import os
 from flask import Flask, g
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -5,7 +6,7 @@ from pymongo import MongoClient
 from app.utils.util import load_yml_file
 from config import app_config
 
-CONFIG_PATH = 'config/{config_name}/application.yml'
+CONFIG_DIRECTORY = 'config/{config_name}'
 
 
 def create_app(config_name):
@@ -39,8 +40,15 @@ def create_app(config_name):
 
 def init_config(config_name):
     config = dict()
-    data = load_yml_file(CONFIG_PATH.format(config_name=config_name))
-    if data is not None:
-        config.update(data)
+
+    directory = CONFIG_DIRECTORY.format(config_name=config_name)
+
+    # iterate over files in that directory
+    for file_name in os.listdir(directory):
+        file_path = os.path.join(directory, file_name)
+        data = load_yml_file(file_path)
+
+        if data is not None:
+            config.update(data)
 
     return config
