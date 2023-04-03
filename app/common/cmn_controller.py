@@ -5,8 +5,11 @@ from app.utils.util import parse_json
 
 
 class CmnController(ABC):
-    CONTENT_TYPE_JSON = "application/json"
-    CONTENT_TYPE_TEXT = "text/plain"
+    CODE_SUCCESS = '00000'
+    CODE_SUCCESS_CREATE = '00001'
+
+    CONTENT_TYPE_JSON = 'application/json'
+    CONTENT_TYPE_TEXT = 'text/plain'
 
     RESPONSE_HEADERS = (
         ('Cache-Control', 'no-store'),
@@ -70,7 +73,7 @@ class CmnController(ABC):
         return response
 
     @staticmethod
-    def get_response(code: str, params: dict | str | tuple) -> tuple:
+    def get_response(code: str, params: dict | str | tuple = None) -> tuple:
         if code not in g.params['API_RESPONSE']:
             raise NotFoundConfigException("Not found config [API_RESPONSE][" + code + "]")
 
@@ -96,3 +99,19 @@ class CmnController(ABC):
             response.update(params)
 
         return response, http_status
+
+    def response_success(self, data: dict = None):
+        if data is not None:
+            data = {
+                'result': data
+            }
+
+        return self.response_api(self.CODE_SUCCESS, data)
+
+    def response_create_success(self, data: dict = None):
+        if data is not None:
+            data = {
+                'result': data
+            }
+
+        return self.response_api(self.CODE_SUCCESS_CREATE, data)

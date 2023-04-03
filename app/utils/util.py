@@ -35,4 +35,4 @@ def get_project_root():
 
 
 def parse_json(data):
-    return json.load(data)
+    return json.loads(data)

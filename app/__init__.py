@@ -3,6 +3,7 @@ from flask import Flask, g
 from flask_cors import CORS
 from pymongo import MongoClient
 
+from app.common.cmn_error import CmnError
 from app.utils.util import load_yml_file
 from config import app_config
 
@@ -34,6 +35,10 @@ def create_app(config_name):
             g.mongo_client.close()
 
         return response
+
+    @app.errorhandler(Exception)
+    def handle_error(e):
+        CmnError.handle_exception(e)
 
     return app
 

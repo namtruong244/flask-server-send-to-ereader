@@ -12,4 +12,6 @@ if __name__ == '__main__':
     #     When running in production *do not* leave this option enabled.
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
-    app.run('localhost', port=8000)
+    import logging
+
+    app.run()
