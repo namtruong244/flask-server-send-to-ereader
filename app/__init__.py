@@ -1,5 +1,5 @@
 import os
-from flask import Flask, g
+from flask import Flask, g, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 
@@ -39,6 +39,16 @@ def create_app(config_name):
     @app.errorhandler(Exception)
     def handle_error(e):
         CmnError.handle_exception(e)
+
+    @app.route('/')
+    def default_route():
+        """Default route"""
+        app.logger.debug('this is a DEBUG message')
+        app.logger.info('this is an INFO message')
+        app.logger.warning('this is a WARNING message')
+        app.logger.error('this is an ERROR message')
+        app.logger.critical('this is a CRITICAL message')
+        return jsonify('hello world')
 
     return app
 
