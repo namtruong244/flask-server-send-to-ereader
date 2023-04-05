@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 from flask import request, make_response, jsonify, g, Response
+
+from .cmn_logger import CmnLogger
 from app.common import NotFoundConfigException
 from app.utils.util import parse_json
 
@@ -34,6 +36,7 @@ class CmnController(ABC):
 
     def main(self):
         self.request_params = self.get_request()
+        CmnLogger.write_log("L7001", 'api')  # start process
 
         return self.execute()
 

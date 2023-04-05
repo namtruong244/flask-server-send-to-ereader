@@ -2,6 +2,7 @@ import jwt
 from functools import wraps
 from flask import request, g, make_response, jsonify
 
+from app import CmnLogger
 from app.collection.users_collection import UsersCollection
 from app.common.cmn_controller import CmnController
 
@@ -37,7 +38,7 @@ def login_required(function):
                 '_id': decoded_jwt['id']
             })
         except Exception as e:
-            print(e.args)
+            CmnLogger.write_log('L4001', e.args)
             response, http_status = CmnController.get_response('40001')
             return make_response(jsonify(response), http_status)
 

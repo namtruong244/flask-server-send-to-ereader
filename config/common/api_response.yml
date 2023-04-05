@@ -7,7 +7,7 @@ API_RESPONSE:
     MSG: 'Completed successfully'
   '00001':
     HTTP: 201
-    CODE: "00000"
+    CODE: '00000'
     MSG: 'Completed successfully'
   #'''''''''''''''''''''''''''''''''''''''''''''''''''''''
   #  4000x：Authorize Error

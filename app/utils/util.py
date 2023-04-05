@@ -20,7 +20,7 @@ def credentials_to_dict(credentials):
 
 def generation_jwt(payload):
     payload.update({
-        'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(hours=24)
+        'exp': datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(days=24)
     })
     return jwt.encode(payload, g.params['APPLICATION']['SECRET_KEY'], g.params['APPLICATION']['ALGORITHM'])
 

@@ -1,0 +1,33 @@
+MESSAGE_LOG:
+  DEV_DEBUG:
+    ID: DEV_DEBUG
+    LEVEL: DEBUG
+    MSG: '%s'
+  DEV_INFO:
+    ID: DEV_INFO
+    LEVEL: INFO
+    MSG: 'Information. %s: %s'
+
+  #'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  #  L4XXX：JWT
+  #,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+  L4001:
+    ID: L4001
+    LEVEL: INFO
+    MSG: 'JWT Error: %s'
+
+  #'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  #  L7XXX：API
+  #,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+  L7001:
+    ID: L7001
+    LEVEL: INFO
+    MSG: 'Processing started (action name: %s)'
+  L7002:
+    ID: L7002
+    LEVEL: INFO
+    MSG: 'Processing ended normally (action name: %s)'
+  L7003:
+    ID: L7003
+    LEVEL: ERROR
+    MSG: 'Processing terminated abnormally'
