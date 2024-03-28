@@ -6,6 +6,7 @@ from flask import g, Response
 from google.oauth2 import id_token
 from google.auth.transport import requests
 
+from ..collection.users_collection import UsersCollection
 from ..common.cmn_controller import CmnController
 from ..utils.util import credentials_to_dict, get_project_root, generation_jwt
 
@@ -31,8 +32,8 @@ class AuthorizeGoogleController(CmnController):
             audience=application_config['CLIENT_ID']
         )
 
-        user_collection = g.mongo_client[application_config['DATABASE_NAME']]['users']
-        user_collection.update_one(
+        user_collection = UsersCollection()
+        user_collection.collection.update_one(
             filter={'_id': id_info['sub']},
             update={
                 '$set': {

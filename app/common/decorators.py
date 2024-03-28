@@ -1,6 +1,10 @@
 import jwt
 from functools import wraps
-from flask import request, g
+from flask import request, g, make_response, jsonify
+
+from app import CmnLogger
+from app.collection.users_collection import UsersCollection
+from app.common.cmn_controller import CmnController
 
 
 # wrapper
@@ -15,7 +19,8 @@ def login_required(function):
 
         # Return 401 if token is not passed
         if token is None:
-            return 401
+            response, http_status = CmnController.get_response('40002')
+            return make_response(jsonify(response), http_status)
 
         try:
             # decoding the payload to fetch the stored details
@@ -28,13 +33,14 @@ def login_required(function):
                 g.params['APPLICATION']['ALGORITHM'],
                 options=options
             )
-            user_collection = g.mongo_client[g.params['APPLICATION']['DATABASE_NAME']]['users']
-            current_user = user_collection.find_one({
+            user_collection = UsersCollection()
+            current_user = user_collection.collection.find_one({
                 '_id': decoded_jwt['id']
             })
         except Exception as e:
-            print(e.args)
-            return 401
+            CmnLogger.write_log('L4001', e.args)
+            response, http_status = CmnController.get_response('40001')
+            return make_response(jsonify(response), http_status)
 
         # returns the current logged users context to the routes
         return function(current_user, *args, **kwargs)
